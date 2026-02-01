@@ -8,7 +8,7 @@ import { useAlerts } from "../hooks/useAlerts";
 import toast from "react-hot-toast";
 import { formatDistanceToNow } from "date-fns";
 
-export default function AlertsPanel({ onAlertClick }) {
+export default function AlertsPanel({ onAlertClick, iconOnly = false }) {
   const { alerts, stats, loading, acknowledgeAlert, resolveAlert } =
     useAlerts();
   const [isExpanded, setIsExpanded] = useState(true);
@@ -75,6 +75,112 @@ export default function AlertsPanel({ onAlertClick }) {
     return null;
   }
 
+  // Icon-only variant for header
+  if (iconOnly) {
+    return (
+      <div className="header-alerts">
+        <button
+          className="alerts-icon-button"
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          <span className="alert-bell">🔔</span>
+          {activeAlerts.length > 0 && (
+            <span className="alerts-badge">{activeAlerts.length}</span>
+          )}
+        </button>
+
+        {isExpanded && (
+          <div className="alerts-dropdown">
+            {/* Header */}
+            <div className="p-4 border-b border-brown-200 bg-cream">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-xl">🔔</span>
+                  <h3 className="font-display font-semibold text-brown-800">
+                    Alerts
+                  </h3>
+                </div>
+                <span className="text-xs font-semibold px-2 py-1 bg-red-100 rounded-full text-red-700">
+                  {activeAlerts.length} active
+                </span>
+              </div>
+            </div>
+
+            {/* Alert List */}
+            <div className="overflow-y-auto max-h-[400px] custom-scrollbar">
+              {activeAlerts.length === 0 ? (
+                <div className="p-6 text-center">
+                  <div className="text-4xl mb-2">✅</div>
+                  <p className="text-brown-600 font-medium">All Clear</p>
+                  <p className="text-sm text-brown-500">No active alerts</p>
+                </div>
+              ) : (
+                activeAlerts.map((alert, index) => (
+                  <div
+                    key={alert.id}
+                    className={`p-4 border-b border-brown-200 hover:bg-cream transition-colors cursor-pointer ${
+                      index % 2 === 0 ? "bg-white" : "bg-cream"
+                    }`}
+                    onClick={() => onAlertClick && onAlertClick(alert)}
+                  >
+                    {/* Alert Content */}
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xl">
+                          {getSeverityIcon(alert.severity)}
+                        </span>
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-bold border ${getSeverityBadgeStyle(alert.severity)}`}
+                        >
+                          {alert.severity.toUpperCase()}
+                        </span>
+                      </div>
+                      <span className="text-xs text-brown-500">
+                        {formatDistanceToNow(new Date(alert.timestamp), {
+                          addSuffix: true,
+                        })}
+                      </span>
+                    </div>
+
+                    <h4 className="font-semibold text-brown-800 mb-1 capitalize">
+                      {alert.farmerName}'s Farm
+                    </h4>
+                    <p className="text-sm text-brown-700 leading-relaxed mb-3">
+                      {alert.message}
+                    </p>
+
+                    {/* Action Buttons */}
+                    <div className="flex gap-2">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleAcknowledge(alert.id);
+                        }}
+                        className="flex-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg transition-colors"
+                      >
+                        ✓ Acknowledge
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleResolve(alert.id);
+                        }}
+                        className="flex-1 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs font-semibold rounded-lg transition-colors"
+                      >
+                        ✓ Resolve
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // Original full variant for sidebar/overlay
   return (
     <div className="fixed top-24 right-6 z-[400] max-w-md animate-slideInRight">
       {/* Header - Always Visible */}

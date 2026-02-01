@@ -8,6 +8,7 @@ import React, { useState, useEffect } from "react";
 export default function DivisionSelector({
   onSelectionChange,
   currentFilters = {},
+  compact = false,
 }) {
   const [districts, setDistricts] = useState([]);
   const [tehsils, setTehsils] = useState([]);
@@ -197,6 +198,56 @@ export default function DivisionSelector({
     disabled:bg-gray-100 disabled:text-gray-400
   `;
 
+  // Compact variant for header
+  if (compact) {
+    return (
+      <div className="header-division">
+        <span className="compact-division-label">📍</span>
+        <select
+          value={selectedDistrict}
+          onChange={handleDistrictChange}
+          className="compact-division-select"
+        >
+          <option value="">District</option>
+          {districts.map((d) => (
+            <option key={d} value={d}>
+              {d}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={selectedTehsil}
+          onChange={handleTehsilChange}
+          disabled={!selectedDistrict}
+          className="compact-division-select"
+        >
+          <option value="">{selectedDistrict ? "Taluka" : "Taluka"}</option>
+          {tehsils.map((t) => (
+            <option key={t} value={t}>
+              {t}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={selectedVillage}
+          onChange={handleVillageChange}
+          disabled={!selectedTehsil}
+          className="compact-division-select"
+        >
+          <option value="">{selectedTehsil ? "Village" : "Village"}</option>
+          {villages.map((v) => (
+            <option key={v} value={v}>
+              {v}
+            </option>
+          ))}
+        </select>
+      </div>
+    );
+  }
+
+  // Original full variant for sidebar
   return (
     <div className="bg-white/90 backdrop-blur-sm p-4 rounded-xl border border-brown-200 shadow-lg mb-4">
       <div className="flex items-center justify-between mb-3">

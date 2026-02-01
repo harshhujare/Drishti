@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-const StatsPanel = ({ farms, allFarms }) => {
+const StatsPanel = ({ farms, allFarms, compact = false }) => {
   // Calculate statistics
   const stats = useMemo(() => {
     const totalFarms = allFarms?.length || 0;
@@ -28,6 +28,32 @@ const StatsPanel = ({ farms, allFarms }) => {
     };
   }, [farms, allFarms]);
 
+  // Compact variant for header
+  if (compact) {
+    return (
+      <div className="header-stats">
+        {/* Visible Farms */}
+        <div className="compact-stat-card">
+          <span className="stat-icon">📍</span>
+          <span className="stat-value">{stats.visibleFarms}</span>
+        </div>
+
+        {/* Top Crop */}
+        <div className="compact-stat-card">
+          <span className="stat-icon">🌾</span>
+          <span className="stat-value capitalize">{stats.topCrop}</span>
+        </div>
+
+        {/* Area Coverage */}
+        <div className="compact-stat-card">
+          <span className="stat-icon">📊</span>
+          <span className="stat-value">{stats.totalArea}</span>
+        </div>
+      </div>
+    );
+  }
+
+  // Original full variant for sidebar/overlay
   return (
     <div
       className="absolute top-6 left-6 z-50 p-5 rounded-xl glass-effect animate-scaleIn"

@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 
-export default function SearchBar({ onSearchChange, searchQuery }) {
+export default function SearchBar({
+  onSearchChange,
+  searchQuery,
+  compact = false,
+}) {
   const [localQuery, setLocalQuery] = useState(searchQuery || "");
 
   // Debounce search - wait 300ms after user stops typing
@@ -18,6 +22,33 @@ export default function SearchBar({ onSearchChange, searchQuery }) {
     setLocalQuery("");
   };
 
+  // Compact variant for header
+  if (compact) {
+    return (
+      <div className="header-search" style={{ position: "relative" }}>
+        <span className="compact-search-icon">🔍</span>
+        <input
+          type="text"
+          value={localQuery}
+          onChange={(e) => setLocalQuery(e.target.value)}
+          placeholder="Search farmers..."
+          className="compact-search-input"
+        />
+        {localQuery && (
+          <button
+            onClick={handleClear}
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-600 transition-colors p-1"
+            title="Clear search"
+            style={{ background: "none", border: "none", cursor: "pointer" }}
+          >
+            ✕
+          </button>
+        )}
+      </div>
+    );
+  }
+
+  // Original full variant for sidebar (if needed)
   return (
     <div className="bg-white/90 backdrop-blur-sm p-4 rounded-xl border border-brown-200 shadow-lg">
       <div className="mb-2">

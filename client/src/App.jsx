@@ -197,139 +197,72 @@ function App() {
 
   // Map View (default)
   return (
-    <div
-      className="flex flex-col h-screen"
-      style={{ backgroundColor: "var(--bg-primary)" }}
-    >
-      {/* Enhanced Header with Agricultural Aesthetic */}
-      <header
-        className="relative overflow-hidden field-pattern animate-slideInDown"
-        style={{
-          background:
-            "linear-gradient(135deg, var(--color-brown-700) 0%, var(--color-brown-600) 50%, var(--color-brown-500) 100%)",
-          boxShadow: "var(--shadow-lg)",
-          borderBottom: "3px solid var(--color-gold-500)",
-        }}
-      >
-        {/* Decorative overlay */}
-        <div
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage: `repeating-linear-gradient(
-              90deg,
-              transparent,
-              transparent 39px,
-              var(--color-gold-300) 39px,
-              var(--color-gold-300) 40px
-            )`,
-          }}
-        ></div>
-
-        <div className="container mx-auto px-8 py-6 relative z-10">
-          <div className="flex items-center justify-between">
-            <div className="flex-1">
-              <h1
-                className="font-display text-4xl font-bold tracking-wide mb-2"
-                style={{
-                  color: "var(--text-inverse)",
-                  textShadow: "2px 2px 4px rgba(0,0,0,0.3)",
-                  letterSpacing: "0.02em",
-                }}
-              >
-                PMFBY
-              </h1>
-              <p
-                className="font-display text-lg italic opacity-90"
-                style={{ color: "var(--color-gold-200)" }}
-              >
-                Pradhan Mantri Fasal Bima Yojana
-              </p>
-              <p
-                className="font-body text-sm mt-1 opacity-80 animate-slideInRight"
-                style={{
-                  color: "var(--text-inverse)",
-                  animationDelay: "200ms",
-                  animationFillMode: "both",
-                }}
-              >
-                AI-Powered Crop Loss Assessment & Farm Intelligence System
-              </p>
-            </div>
-
-            {/* Navigation Button */}
-            <button
-              onClick={() => setCurrentView("ndvi")}
-              className="px-6 py-3 rounded-lg font-medium transition-all hover:scale-105 animate-pulse"
-              style={{
-                backgroundColor: "var(--color-gold-500)",
-                color: "var(--color-brown-800)",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
-              }}
-            >
-              🛰️ NDVI Dashboard
-            </button>
-
-            {/* Decorative wheat icon */}
-            <div
-              className="text-6xl opacity-20 animate-float ml-6"
-              style={{ animationDelay: "1s" }}
-            >
-              🌾
-            </div>
-          </div>
+    <div className="app-container">
+      {/* Header with compact components */}
+      <header className="header">
+        {/* Logo Section */}
+        <div className="header-logo">
+          <h1>PMFBY</h1>
+          <p>Pradhan Mantri Fasal Bima Yojana</p>
         </div>
+
+        {/* Compact Division Selector */}
+        <DivisionSelector
+          onSelectionChange={updateFilters}
+          currentFilters={filters}
+          compact
+        />
+
+        {/* Compact Search Bar */}
+        <SearchBar
+          searchQuery={searchQuery}
+          onSearchChange={updateSearch}
+          compact
+        />
+
+        {/* Compact Stats Panel */}
+        <StatsPanel farms={visibleFarms} allFarms={farms} compact />
+
+        {/* Icon-only Alerts Panel */}
+        <AlertsPanel onAlertClick={handleAlertClick} iconOnly />
+
+        {/* NDVI Dashboard Button */}
+        <button
+          onClick={() => setCurrentView("ndvi")}
+          className="px-4 py-2 rounded-lg font-medium transition-all hover:scale-105"
+          style={{
+            backgroundColor: "var(--color-gold-500)",
+            color: "var(--color-brown-800)",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+            fontSize: "0.875rem",
+            fontWeight: 600,
+            border: "none",
+            cursor: "pointer",
+          }}
+        >
+          🛰️ NDVI
+        </button>
       </header>
 
-      {/* Main Content */}
-      <div className="flex flex-1 overflow-hidden relative">
-        {/* Stats Panel Overlay (top-left) */}
-        <StatsPanel farms={visibleFarms} allFarms={farms} />
+      {/* Main Content Area */}
+      <div className="main-content">
+        {/* Left Sidebar with Farmers List */}
+        <aside className="sidebar-left">
+          <FarmersList
+            farms={visibleFarms}
+            pagination={pagination}
+            onNextPage={nextPage}
+            onPrevPage={prevPage}
+          />
+        </aside>
 
-        {/* Map Section */}
-        <div className="flex-1 relative">
+        {/* Map Container */}
+        <main className="map-container">
           <FarmMap
             farms={farms}
             onVisibleFarmsChange={handleVisibleFarmsChange}
           />
-        </div>
-
-        {/* Alerts Panel Overlay (top-right) */}
-        <AlertsPanel onAlertClick={handleAlertClick} />
-
-        {/* Sidebar Section - Farmers List & Division Selector */}
-        <div
-          className="w-96 flex flex-col overflow-hidden animate-slideInRight bg-white/50 backdrop-blur-sm relative z-10"
-          style={{
-            borderLeft: "1px solid var(--border-color)",
-            boxShadow: "var(--shadow-xl)",
-          }}
-        >
-          {/* Division Selector */}
-          <div className="p-4 bg-white/80 border-b border-brown-200">
-            <DivisionSelector
-              onSelectionChange={updateFilters}
-              currentFilters={filters}
-            />
-          </div>
-
-          {/* Search Bar */}
-          <div className="p-4 bg-white/80 border-b border-brown-200">
-            <SearchBar
-              searchQuery={searchQuery}
-              onSearchChange={updateSearch}
-            />
-          </div>
-
-          {/* Farmers List */}
-          <div className="flex-1 overflow-hidden">
-            <FarmersList
-              farms={visibleFarms}
-              pagination={pagination}
-              onNextPage={nextPage}
-              onPrevPage={prevPage}
-            />
-          </div>
-        </div>
+        </main>
       </div>
     </div>
   );
