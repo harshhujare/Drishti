@@ -47,59 +47,69 @@ function generateHealthyData() {
  * Inject disaster scenarios for testing
  */
 function generateDisasterScenarios() {
-  console.log("🌊 Injecting disaster scenarios for testing...\n");
+  console.log("🌊 Injecting HACKATHON FLOOD SCENARIO for Shahuwadi...\n");
 
   const farms = getFarms();
 
-  // Scenario 1: Severe flood on Farm 1 (Rajaram Mane)
-  console.log("⚠️  SCENARIO 1: Severe Flood - Farm 1 (Rajaram Mane)");
-  const farm1Data = generateNDVITimeSeries(farms[0], 60);
-  const flood1 = injectDisasterEvent(farm1Data, {
-    type: "flood",
-    startDay: 15, // 15 days ago
-    duration: 7, // 7-day flood event
-    severity: 0.8, // 80% severity (very severe)
+  // Randomly select 40 farms for flood disaster
+  const shuffled = [...farms].sort(() => Math.random() - 0.5);
+  const affectedFarms = shuffled.slice(0, 40);
+  const healthyFarms = shuffled.slice(40, 50);
+
+  console.log(`⚡ DISASTER SCENARIO: Regional Flood in Shahuwadi Tehsil`);
+  console.log(`📊 Total Farms: 50`);
+  console.log(`🔴 Affected: 40 farms (80%)`);
+  console.log(`🟢 Healthy: 10 farms (20%)\n`);
+
+  let severeCount = 0;
+  let moderateCount = 0;
+
+  // Inject flood disaster on affected farms
+  affectedFarms.forEach((farm, index) => {
+    // Vary severity: 60-90% (ensures >30% NDVI drop)
+    const severity = 0.6 + Math.random() * 0.3;
+    const isSevere = severity > 0.75;
+
+    if (isSevere) severeCount++;
+    else moderateCount++;
+
+    const farmData = generateNDVITimeSeries(farm, 60);
+    const floodData = injectDisasterEvent(farmData, {
+      type: "flood",
+      startDay: 15, // 15 days ago
+      duration: 7, // 7-day flood event
+      severity: severity,
+    });
+    storeNDVIData(floodData);
+
+    if (index < 3) {
+      // Show first 3 as examples
+      const expectedDrop = (severity * 50).toFixed(1);
+      console.log(
+        `  ${isSevere ? "🔴" : "🟠"} Farm ${farm.id} (${farm.farmerName}): ${(severity * 100).toFixed(0)}% severity → ~${expectedDrop}% NDVI drop`,
+      );
+    }
   });
-  storeNDVIData(flood1);
-  console.log(`   💧 Severe 7-day flood injected (80% severity)`);
-  console.log(`   📉 Expected NDVI drop: ~40%`);
-  console.log(`   🚨 Should trigger CRITICAL alert\n`);
 
-  // Scenario 2: Moderate drought on Farm 2 (Sarjerao Mane)
-  console.log("⚠️  SCENARIO 2: Moderate Drought - Farm 2 (Sarjerao Mane)");
-  const farm2Data = generateNDVITimeSeries(farms[1], 60);
-  const drought2 = injectDisasterEvent(farm2Data, {
-    type: "drought",
-    startDay: 20, // 20 days ago
-    duration: 15, // 15-day drought
-    severity: 0.6, // 60% severity (moderate)
+  console.log(`  ... and ${affectedFarms.length - 3} more affected farms\n`);
+  console.log(`📈 Severity Distribution:`);
+  console.log(`   🔴 Severe (>75%): ${severeCount} farms`);
+  console.log(`   🟠 Moderate (60-75%): ${moderateCount} farms\n`);
+
+  // Generate healthy data for remaining 10 farms
+  healthyFarms.forEach((farm, index) => {
+    const farmData = generateNDVITimeSeries(farm, 60);
+    storeNDVIData(farmData);
+
+    if (index < 2) {
+      // Show first 2 as examples
+      console.log(
+        `  🟢 Farm ${farm.id} (${farm.farmerName}): Healthy - No disaster`,
+      );
+    }
   });
-  storeNDVIData(drought2);
-  console.log(`   ☀️  Moderate 15-day drought injected (60% severity)`);
-  console.log(`   📉 Expected NDVI drop: ~24%`);
-  console.log(`   ⚡ Should trigger WARNING alert\n`);
 
-  // Scenario 3: Minor pest attack on Farm 3 (Vishal Rane)
-  console.log("⚠️  SCENARIO 3: Minor Pest Attack - Farm 3 (Vishal Rane)");
-  const farm3Data = generateNDVITimeSeries(farms[2], 60);
-  const pest3 = injectDisasterEvent(farm3Data, {
-    type: "pest",
-    startDay: 10, // 10 days ago
-    duration: 5, // 5-day pest issue
-    severity: 0.4, // 40% severity (minor)
-  });
-  storeNDVIData(pest3);
-  console.log(`   🐛 Minor 5-day pest attack injected (40% severity)`);
-  console.log(`   📉 Expected NDVI drop: ~12%`);
-  console.log(`   💚 Should trigger WARNING or stay healthy\n`);
-
-  // Farm 4 stays healthy (no disaster)
-  console.log("✅ SCENARIO 4: Healthy Farm - Farm 4 (Ramesh Patil)");
-  const farm4Data = generateNDVITimeSeries(farms[3], 60);
-  storeNDVIData(farm4Data);
-  console.log(`   🌾 No disaster - healthy crop`);
-  console.log(`   📈 Expected: Normal NDVI, no alerts\n`);
-
+  console.log(`  ... and ${healthyFarms.length - 2} more healthy farms\n`);
   console.log("=".repeat(60) + "\n");
 }
 

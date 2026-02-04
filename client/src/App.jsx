@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import FarmMap from "./components/FarmMap";
 import FarmersList from "./components/FarmersList";
 import StatsPanel from "./components/StatsPanel";
@@ -6,6 +6,7 @@ import AlertsPanel from "./components/AlertsPanel";
 import DivisionSelector from "./components/DivisionSelector";
 import SearchBar from "./components/SearchBar";
 import NDVIDashboard from "./pages/NDVIDashboard";
+import OfficerDashboard from "./layouts/OfficerDashboard";
 import { useFarms } from "./hooks/useFarms";
 import toast from "react-hot-toast";
 import "./App.css";
@@ -26,8 +27,31 @@ function App() {
     district: "Kolhapur",
   });
   const [visibleFarms, setVisibleFarms] = useState([]);
-  const [currentView, setCurrentView] = useState("map"); // 'map' or 'ndvi'
+  const [currentView, setCurrentView] = useState("map"); // 'map', 'ndvi', or 'officer'
   const [selectedFarmId, setSelectedFarmId] = useState(null);
+
+  // Toggle body class for map view overflow control
+  useEffect(() => {
+    if (currentView === "map") {
+      document.body.classList.add("map-view");
+    } else {
+      document.body.classList.remove("map-view");
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.classList.remove("map-view");
+    };
+  }, [currentView]);
+
+  // Listen for navigation events from child components (like OfficerDashboard)
+  useEffect(() => {
+    const handleNavigate = (event) => {
+      setCurrentView(event.detail);
+    };
+    window.addEventListener("navigate-to", handleNavigate);
+    return () => window.removeEventListener("navigate-to", handleNavigate);
+  }, []);
 
   const handleVisibleFarmsChange = useCallback((newVisibleFarms) => {
     setVisibleFarms(newVisibleFarms);
@@ -195,6 +219,11 @@ function App() {
     );
   }
 
+  // Officer Dashboard View
+  if (currentView === "officer") {
+    return <OfficerDashboard />;
+  }
+
   // Map View (default)
   return (
     <div className="app-container">
@@ -241,6 +270,23 @@ function App() {
           }}
         >
           🛰️ NDVI
+        </button>
+
+        {/* Officer Dashboard Button */}
+        <button
+          onClick={() => setCurrentView("officer")}
+          className="px-4 py-2 rounded-lg font-medium transition-all hover:scale-105"
+          style={{
+            backgroundColor: "#10b981",
+            color: "white",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+            fontSize: "0.875rem",
+            fontWeight: 600,
+            border: "none",
+            cursor: "pointer",
+          }}
+        >
+          👨‍💼 Officer
         </button>
       </header>
 

@@ -1,0 +1,483 @@
+.payout-breakdown {
+  background: linear-gradient(135deg, #fff5eb 0%, #ffffff 100%);
+  border: 2px solid #e7d4c0;
+  border-radius: 12px;
+  padding: 24px;
+  margin: 16px 0;
+  box-shadow: 0 4px 6px rgba(107, 70, 40, 0.1);
+  font-family: "IBM Plex Sans", sans-serif;
+}
+
+.payout-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #e7d4c0;
+}
+
+.payout-header h3 {
+  color: #6b4628;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.status-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* AI Model Information */
+.ai-model-info {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border: 2px solid #bae6fd;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.model-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.ai-badge {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.model-name {
+  color: #1e40af;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: "Playfair Display", serif;
+}
+
+.model-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.metric {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: white;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #bae6fd;
+}
+
+.metric-icon {
+  font-size: 22px;
+}
+
+.metric-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metric-label {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.metric-value {
+  font-size: 14px;
+  color: #1e40af;
+  font-weight: 700;
+}
+
+.data-sources {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sources-label {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.source-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.source-badge {
+  background: white;
+  color: #059669;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid #10b981;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: help;
+  transition: all 0.2s;
+}
+
+.source-badge:hover {
+  background: #f0fdf4;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.2);
+}
+
+
+/* AI Confidence Score  */
+.ai-confidence {
+  margin-bottom: 20px;
+}
+
+.confidence-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  color: #8b6f47;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.ai-icon {
+  font-size: 18px;
+}
+
+.confidence-bar {
+  width: 100%;
+  height: 32px;
+  background-color: #f5f1eb;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid #e7d4c0;
+  position: relative;
+}
+
+.confidence-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 12px;
+  transition: width 0.8s ease-out;
+}
+
+.confidence-value {
+  color: white;
+  font-weight: 700;
+  font-size: 13px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Final Payout */
+.final-payout {
+  background: linear-gradient(135deg, #6b4628 0%, #8b6f47 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 12px rgba(107, 70, 40, 0.3);
+}
+
+.payout-label {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-bottom: 8px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.payout-amount {
+  font-size: 36px;
+  font-weight: 700;
+  font-family: "Playfair Display", serif;
+}
+
+/* Calculation Formula */
+.calculation-formula {
+  margin-bottom: 20px;
+}
+
+.calculation-formula h4 {
+  color: #6b4628;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+}
+
+.formula-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formula-step {
+  background: white;
+  border: 1px solid #e7d4c0;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.step-number {
+  display: inline-block;
+  background-color: #8b6f47;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.step-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.step-description {
+  color: #8b6f47;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.step-formula {
+  color: #6b4628;
+  font-size: 14px;
+  font-family: "Courier New", monospace;
+  background-color: #f5f1eb;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border-left: 3px solid #c4a574;
+}
+
+.step-result {
+  color: #059669;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.step-arrow {
+  text-align: center;
+  color: #c4a574;
+  font-size: 24px;
+  margin: 8px 0;
+}
+
+/* Simple Formula Display */
+.simple-formula {
+  background: white;
+  border: 2px solid #e7d4c0;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.formula-line {
+  font-size: 15px;
+  color: #6b4628;
+  margin: 8px 0;
+  font-family: "Courier New", monospace;
+}
+
+.formula-line.factors {
+  color: #8b6f47;
+  padding-left: 16px;
+}
+
+.formula-line.final {
+  color: #059669;
+  font-weight: 700;
+  font-size: 17px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 2px dashed #e7d4c0;
+}
+
+/* Adjustment Factors */
+.adjustment-factors {
+  margin-bottom: 20px;
+}
+
+.details-toggle {
+  width: 100%;
+  background-color: #f5f1eb;
+  border: 1px solid #e7d4c0;
+  color: #6b4628;
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+
+.details-toggle:hover {
+  background-color: #ede5d8;
+  border-color: #c4a574;
+}
+
+.factors-list {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.factor-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border-left: 4px solid #c4a574;
+}
+
+.factor-item.weather {
+  border-left-color: #3b82f6;
+}
+
+.factor-item.govt {
+  border-left-color: #8b6f47;
+}
+
+.factor-item.market {
+  border-left-color: #10b981;
+}
+
+.factor-icon {
+  font-size: 20px;
+}
+
+.factor-label {
+  flex: 1;
+  color: #6b4628;
+  font-size: 14px;
+}
+
+.factor-value {
+  color: #059669;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+/* Recommendation */
+.recommendation {
+  background-color: #dbeafe;
+  border-left: 4px solid #3b82f6;
+  padding: 12px 16px;
+  border-radius: 8px;
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.recommendation-icon {
+  font-size: 20px;
+}
+
+.recommendation-text {
+  color: #1e40af;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* Yield Loss Info */
+.yield-loss-info {
+  background: white;
+  border: 1px solid #e7d4c0;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info-row.full {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.info-label {
+  color: #8b6f47;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.info-value {
+  color: #6b4628;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.info-value.small {
+  font-size: 13px;
+  font-weight: 500;
+  color: #8b6f47;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .payout-breakdown {
+    padding: 16px;
+  }
+
+  .payout-amount {
+    font-size: 28px;
+  }
+
+  .formula-step {
+    padding: 12px;
+  }
+}

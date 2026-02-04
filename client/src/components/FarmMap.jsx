@@ -32,8 +32,8 @@ const FarmMap = ({ farms, onVisibleFarmsChange }) => {
   const handleResetView = () => {
     if (mapRef.current) {
       mapRef.current.flyTo({
-        center: [74.2433, 16.705],
-        zoom: 16,
+        center: [74.198, 16.715],
+        zoom: 17,
         duration: 1500,
       });
     }
@@ -150,8 +150,8 @@ const FarmMap = ({ farms, onVisibleFarmsChange }) => {
           },
         ],
       },
-      center: [74.2433, 16.705],
-      zoom: 16,
+      center: [74.198, 16.715],
+      zoom: 17,
     });
 
     mapRef.current = map;
@@ -159,6 +159,23 @@ const FarmMap = ({ farms, onVisibleFarmsChange }) => {
     map.on("load", () => {
       console.log("Map loaded successfully");
       setMapLoaded(true);
+
+      // Auto-fit to farm bounds if farms are available
+      if (farms && farms.length > 0) {
+        const bounds = new maplibregl.LngLatBounds();
+        farms.forEach((farm) => {
+          farm.polygon.forEach((coord) => {
+            // coord is [lat, lng], bounds.extend expects [lng, lat]
+            bounds.extend([coord[1], coord[0]]);
+          });
+        });
+
+        map.fitBounds(bounds, {
+          padding: 50,
+          maxZoom: 16,
+          duration: 0, // Instant fit on initial load
+        });
+      }
     });
 
     map.on("error", (e) => {
@@ -193,59 +210,25 @@ const FarmMap = ({ farms, onVisibleFarmsChange }) => {
       data: farmsToGeoJSON(farms),
     });
 
-    // Add fill layer for farm polygons with HEALTH-BASED colors
+    // Add fill layer for farm polygons - Green overlay
     map.addLayer({
       id: layerId,
       type: "fill",
       source: sourceId,
       paint: {
-        // Dynamic color based on farm health
-        "fill-color": [
-          "case",
-          // Use farm health data to determine color
-          ...farms.flatMap((farm) => {
-            const health =
-              farmHealthMap[farm.id]?.health || getFarmHealthStatus(null, null);
-            return [["==", ["get", "id"], farm.id], health.fillColor];
-          }),
-          "#9E9E9E", // Default gray for no data
-        ],
-        "fill-opacity": [
-          "case",
-          ...farms.flatMap((farm) => {
-            const health = farmHealthMap[farm.id]?.health || { opacity: 0.3 };
-            return [["==", ["get", "id"], farm.id], health.opacity];
-          }),
-          0.3,
-        ],
+        "fill-color": "#4CAF50", // Green fill
+        "fill-opacity": 0.5,
       },
     });
 
-    // Add outline layer with health-based border color
+    // Add outline layer - Yellow border
     map.addLayer({
       id: outlineLayerId,
       type: "line",
       source: sourceId,
       paint: {
-        "line-color": [
-          "case",
-          ...farms.flatMap((farm) => {
-            const health = farmHealthMap[farm.id]?.health || {
-              color: "#9E9E9E",
-            };
-            return [["==", ["get", "id"], farm.id], health.color];
-          }),
-          "#9E9E9E",
-        ],
-        "line-width": [
-          "case",
-          ...farms.flatMap((farm) => {
-            const health = farmHealthMap[farm.id]?.health;
-            const isPulsingFarm = health?.pulse || false;
-            return [["==", ["get", "id"], farm.id], isPulsingFarm ? 4 : 2.5];
-          }),
-          2.5,
-        ],
+        "line-color": "#FFEB3B", // Yellow border
+        "line-width": 3,
         "line-opacity": 0.9,
       },
     });

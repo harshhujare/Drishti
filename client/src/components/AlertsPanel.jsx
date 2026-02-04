@@ -184,13 +184,13 @@ export default function AlertsPanel({ onAlertClick, iconOnly = false }) {
   return (
     <div className="fixed top-24 right-6 z-[400] max-w-md animate-slideInRight">
       {/* Header - Always Visible */}
-      <div
-        className="bg-white rounded-t-xl border-2 border-brown-300 shadow-lg cursor-pointer"
-        onClick={() => setIsExpanded(!isExpanded)}
-      >
+      <div className="bg-white rounded-t-xl border-2 border-brown-300 shadow-lg">
         <div className="p-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+            <div
+              className="flex items-center gap-3 cursor-pointer"
+              onClick={() => setIsExpanded(!isExpanded)}
+            >
               <div className="text-2xl">🔔</div>
               <div>
                 <h3 className="font-display font-semibold text-lg text-brown-800">
@@ -221,10 +221,22 @@ export default function AlertsPanel({ onAlertClick, iconOnly = false }) {
               )}
             </div>
 
-            {/* Expand/Collapse Icon */}
-            <button className="text-brown-600 hover:text-brown-800 transition-colors">
-              {isExpanded ? "▼" : "▶"}
-            </button>
+            {/* Expand/Collapse and Close Buttons */}
+            <div className="flex items-center gap-2">
+              <button
+                className="text-brown-600 hover:text-brown-800 transition-colors"
+                onClick={() => setIsExpanded(!isExpanded)}
+              >
+                {isExpanded ? "▼" : "▶"}
+              </button>
+              <button
+                className="w-6 h-6 flex items-center justify-center rounded-full bg-brown-100 hover:bg-brown-200 text-brown-600 hover:text-brown-800 transition-colors text-sm font-bold"
+                onClick={() => setIsExpanded(false)}
+                title="Close alerts"
+              >
+                ✕
+              </button>
+            </div>
           </div>
         </div>
       </div>

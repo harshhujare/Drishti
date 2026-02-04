@@ -44,8 +44,13 @@
     font-family: var(--font-body);
     color: var(--text-primary);
     background-color: var(--bg-primary);
-    overflow: hidden;
+    overflow: auto;
     position: relative;
+  }
+
+  /* Prevent scrolling only when in map view */
+  body.map-view {
+    overflow: hidden;
   }
 
   /* Subtle grain texture overlay on body */
@@ -64,7 +69,7 @@
 
   #root {
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
     position: relative;
     z-index: var(--z-base);
   }

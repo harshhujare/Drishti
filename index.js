@@ -5,6 +5,7 @@ import farmsRoutes from "./routes/farmsRoutes.js";
 import ndviRoutes from "./routes/ndvi.js";
 import alertRoutes from "./routes/alerts.js";
 import divisionRoutes from "./routes/divisions.js";
+import claimsRoutes from "./routes/claims.js";
 import { monitorAllFarms } from "./services/ndviMonitor.js";
 
 const app = express();
@@ -26,6 +27,7 @@ app.use("/api", divisionRoutes); // Administrative Division routes - MUST be bef
 app.use("/api/farms", farmsRoutes);
 app.use("/api", ndviRoutes); // NDVI routes
 app.use("/api", alertRoutes); // Alert & Monitoring routes
+app.use("/api", claimsRoutes); // Claims & Approval routes
 
 // Health check route
 app.get("/", (req, res) => {
